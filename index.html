@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChalkBox Co. | Custom Chalk Boxes for Gymnasts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --chalk-white:#F7F4EE;
+    --chalk-white-2:#EFEAE0;
+    --ink:#20222B;
+    --ink-soft:#565A66;
+    --beam-blue:#2F6FED;
+    --grip-purple:#7C4DFF;
+    --vault-pink:#FF5CA8;
+    --line:#E3DFD5;
+    --radius:18px;
+    --shadow:0 20px 40px -18px rgba(32,34,43,0.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{overflow-x:hidden;width:100%;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--chalk-white);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.logo{font-family:'Poppins',sans-serif;}
+  a{color:inherit;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px;}
+  img,svg{display:block;max-width:100%;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,244,238,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;padding-top:16px;padding-bottom:16px;}
+  .logo{font-weight:800;font-size:20px;letter-spacing:-0.02em;display:flex;align-items:center;gap:8px;}
+  .logo .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--beam-blue),var(--vault-pink));display:inline-block;}
+  .nav-links{display:flex;gap:28px;font-size:14px;font-weight:600;}
+  .nav-links a{text-decoration:none;color:var(--ink-soft);transition:color .2s;}
+  .nav-links a:hover{color:var(--ink);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:12px 22px;border-radius:999px;font-weight:700;font-size:14px;
+    text-decoration:none;cursor:pointer;border:none;transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--beam-blue),var(--grip-purple));color:#fff;box-shadow:0 10px 24px -8px rgba(124,77,255,.55);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink);color:#fff;}
+  .nav-cta{display:none;}
+  @media(min-width:820px){.nav-cta{display:inline-flex;} }
+  .nav-links{display:none;}
+  @media(min-width:820px){.nav-links{display:flex;}}
+  .nav-right{display:flex;align-items:center;gap:12px;}
+  .nav-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:40px;height:40px;background:none;border:1.5px solid var(--line);
+    border-radius:10px;cursor:pointer;color:var(--ink);font-size:18px;padding:0;
+  }
+  @media(min-width:820px){.nav-toggle{display:none;}}
+  .mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid var(--line);}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{padding:14px 24px;font-weight:600;font-size:15px;text-decoration:none;color:var(--ink-soft);border-bottom:1px solid var(--line);}
+  .mobile-menu a:last-child{border-bottom:none;}
+  .mobile-menu a:hover{color:var(--ink);}
+  .mobile-menu .btn{margin:16px 24px 20px;}
+  @media(min-width:820px){.mobile-menu{display:none !important;}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:72px 0 96px;
+    background:
+      radial-gradient(circle at 85% 10%, rgba(255,92,168,0.18), transparent 45%),
+      radial-gradient(circle at 10% 90%, rgba(47,111,237,0.18), transparent 45%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:48px;align-items:center;}
+  @media(min-width:900px){.hero-grid{grid-template-columns:1.05fr 0.95fr;}}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid var(--line);
+    padding:6px 14px;border-radius:999px;font-size:12.5px;font-weight:700;
+    color:var(--grip-purple);letter-spacing:.02em;margin-bottom:20px;
+  }
+  .hero h1{font-size:44px;line-height:1.08;letter-spacing:-0.02em;margin:0 0 18px;font-weight:800;}
+  .hero h1 span{background:linear-gradient(135deg,var(--beam-blue),var(--vault-pink));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  @media(min-width:640px){.hero h1{font-size:56px;}}
+  .hero p.lead{font-size:18px;color:var(--ink-soft);max-width:520px;margin:0 0 32px;line-height:1.6;}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:28px;}
+
+  .hero-art{position:relative;display:flex;justify-content:center;width:100%;}
+  .hero-art .card{
+    background:#fff;border-radius:24px;box-shadow:var(--shadow);
+    padding:28px;border:1px solid var(--line);
+    width:100%;max-width:396px;
+  }
+  #heroBoxSvg{display:block;width:100%;height:auto;}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:80px 0;}
+  .section-head{max-width:640px;margin:0 auto 48px;text-align:center;}
+  .section-head .eyebrow{display:inline-flex;}
+  .section-head h2{font-size:32px;margin:0 0 14px;letter-spacing:-0.01em;}
+  .section-head p{color:var(--ink-soft);font-size:16px;line-height:1.6;margin:0;}
+
+  .feature-grid{display:grid;grid-template-columns:1fr;gap:24px;}
+  @media(min-width:700px){.feature-grid{grid-template-columns:repeat(3,1fr);}}
+  .feature{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px;
+  }
+  .feature .icon{
+    width:44px;height:44px;border-radius:12px;margin-bottom:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--beam-blue),var(--grip-purple));color:#fff;
+  }
+  .feature h3{font-size:17px;margin:0 0 8px;}
+  .feature p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.6;}
+
+  /* ---------- CUSTOMIZER ---------- */
+  .customize{background:var(--chalk-white-2);}
+  .cz-grid{display:grid;grid-template-columns:1fr;gap:40px;}
+  @media(min-width:960px){.cz-grid{grid-template-columns:0.9fr 1.1fr;}}
+  .cz-preview{position:sticky;top:100px;align-self:start;}
+  @media(max-width:959px){.cz-preview{position:static;}}
+  .preview-card{
+    background:#fff;border-radius:24px;border:1px solid var(--line);
+    box-shadow:var(--shadow);padding:28px;
+  }
+  .lid-plate{
+    margin-top:22px;border-radius:14px;padding:22px 18px;
+    background:#FFFDF8;border:2px solid var(--line);
+    text-align:center;transition:border-color .2s;
+  }
+  .lid-plate .plate-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700;margin-bottom:10px;}
+  .lid-plate .gym-line{font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;letter-spacing:.01em;line-height:1.2;word-break:break-word;transition:color .2s, font-size .2s, font-family .2s;}
+  .lid-plate .gymnast-line{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;margin-top:4px;letter-spacing:.02em;word-break:break-word;transition:color .2s, font-family .2s;}
+  .spec-list{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:13.5px;}
+  .spec-list li{display:flex;justify-content:space-between;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:10px;}
+  .spec-list li b{color:var(--ink);font-weight:600;}
+  .swatch-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.15);vertical-align:-2px;margin-right:6px;}
+
+  .cz-panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;}
+  .cz-step{margin-bottom:32px;}
+  .cz-step:last-child{margin-bottom:0;}
+  .cz-step-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;margin-bottom:14px;}
+  .cz-step-num{
+    width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;
+    font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .swatches{display:flex;flex-wrap:wrap;gap:12px;}
+  .swatch{
+    width:42px;height:42px;border-radius:50%;cursor:pointer;
+    border:3px solid transparent;position:relative;transition:transform .15s;
+  }
+  .swatch:hover{transform:scale(1.08);}
+  .swatch.active{border-color:var(--ink);}
+  .swatch.active::after{
+    content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:14px;text-shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+  .swatch[data-hex="#F5F1EA"].active::after,.swatch[data-hex="#FFFFFF"].active::after{color:#20222B;text-shadow:none;}
+  .font-options{display:flex;flex-wrap:wrap;gap:10px;}
+  .font-option{
+    flex:1 1 calc(50% - 10px);min-width:140px;
+    border:2px solid var(--line);border-radius:12px;background:var(--chalk-white);
+    padding:12px 14px;cursor:pointer;text-align:left;transition:border-color .15s, transform .15s;
+  }
+  .font-option:hover{transform:translateY(-1px);}
+  .font-option.active{border-color:var(--ink);background:#fff;}
+  .font-option .font-option-label{display:block;font-size:11px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+  .font-option .font-option-sample{display:block;font-size:20px;line-height:1.2;color:var(--ink);}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+  .field input, .field textarea, .field select{
+    width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);
+    font-family:'Inter',sans-serif;font-size:14.5px;background:var(--chalk-white);
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{outline:2px solid var(--beam-blue);outline-offset:1px;}
+  .field .hint{font-size:12px;color:var(--ink-soft);margin-top:5px;}
+
+  /* ---------- ORDER ---------- */
+  .order{background:var(--chalk-white);}
+
+  /* ---------- FOUNDER ---------- */
+  .founder{background:var(--chalk-white-2);}
+  .founder-card{
+    background:#fff;border-radius:var(--radius);border:1px solid var(--line);
+    box-shadow:var(--shadow);padding:36px;max-width:860px;margin:0 auto;
+    display:flex;flex-direction:column;gap:24px;text-align:center;
+  }
+  @media(min-width:720px){.founder-card{flex-direction:row;text-align:left;align-items:flex-start;}}
+  .founder-avatar{
+    width:180px;height:220px;border-radius:16px;flex-shrink:0;margin:0 auto;
+    object-fit:cover;object-position:center 25%;
+    box-shadow:var(--shadow);
+  }
+  @media(min-width:720px){.founder-avatar{margin:0;}}
+  .founder-bio h3{margin:0 0 10px;font-size:22px;font-family:'Poppins',sans-serif;}
+  .founder-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;justify-content:center;}
+  @media(min-width:720px){.founder-tags{justify-content:flex-start;}}
+  .founder-tag{
+    background:var(--chalk-white-2);border:1px solid var(--line);color:var(--ink-soft);
+    font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;
+  }
+  .founder-bio p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.7;}
+  .order-grid{display:grid;grid-template-columns:1fr;gap:40px;}
+  @media(min-width:900px){.order-grid{grid-template-columns:1fr 1.2fr;}}
+  .order-info{background:linear-gradient(160deg,var(--ink) 0%, #33364a 100%);color:#fff;border-radius:var(--radius);padding:32px;}
+  .order-info h3{font-size:22px;margin:0 0 12px;}
+  .order-info p{color:#c9cbd6;font-size:14.5px;line-height:1.7;}
+  .order-info ul{padding-left:18px;margin:20px 0 0;color:#dfe0e8;font-size:14px;line-height:2;}
+  .form-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;}
+  .form-row{display:grid;grid-template-columns:1fr;gap:16px;}
+  @media(min-width:560px){.form-row.two{grid-template-columns:1fr 1fr;}}
+  .confirm-box{display:none;margin-top:18px;padding:16px 18px;border-radius:12px;background:#EAF6EF;border:1px solid #B9E4C6;color:#1F6B3A;font-size:14px;line-height:1.6;}
+  .confirm-box.show{display:block;}
+
+  footer{background:var(--ink);color:#c9cbd6;padding:44px 0;}
+  .footer-grid{display:flex;flex-direction:column;gap:18px;align-items:flex-start;justify-content:space-between;}
+  @media(min-width:700px){.footer-grid{flex-direction:row;align-items:center;}}
+  footer .logo{color:#fff;}
+  footer .fine{font-size:12.5px;color:#8b8ea0;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="dot"></span>ChalkBox Co.</div>
+    <div class="nav-links">
+      <a href="#product">The Box</a>
+      <a href="#customize">Customize</a>
+      <a href="#why">Why Us</a>
+      <a href="#order">Order</a>
+      <a href="#founder">Founder</a>
+    </div>
+    <div class="nav-right">
+      <a href="#customize" class="btn btn-primary nav-cta">Design Yours</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#product">The Box</a>
+    <a href="#customize">Customize</a>
+    <a href="#why">Why Us</a>
+    <a href="#order">Order</a>
+    <a href="#founder">Founder</a>
+    <a href="#customize" class="btn btn-primary">Design Yours</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🤸 Made for beam gymnasts</span>
+      <h1>Chalk up.<br><span>Stick every landing.</span></h1>
+      <p class="lead">A personalized chalk box for gymnasts' feet on beam — engraved with your gym name and gymnast's name, in a box color that's all yours. Better grip, zero slipping, 100% you.</p>
+      <div class="hero-actions">
+        <a href="#customize" class="btn btn-primary">Start Customizing →</a>
+        <a href="#product" class="btn btn-ghost">See the Box</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="card">
+        <svg id="heroBoxSvg" viewBox="0 0 400 320"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="product">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The product</span>
+      <h2>Built for beam, made for grip</h2>
+      <p>Every beam routine starts with dry, chalked feet. The ChalkBox gives gymnasts a compact, sturdy spot to chalk up before mounting — right at the base of the beam, right where they need it.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="icon">✋</div>
+        <h3>Better foot grip</h3>
+        <p>A wide, low-lip design lets gymnasts fully coat the soles and sides of their feet in chalk before every beam pass — no more slipping off the beam.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🎨</div>
+        <h3>Personalized, not generic</h3>
+        <p>Your gym name and gymnast's name are printed on the lid in one color of your choice, and the box itself comes in a color that matches your team.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🎒</div>
+        <h3>Durable & portable</h3>
+        <p>Lightweight, stackable, and built to survive being tossed in a gym bag between meets — with a snap-lid to keep chalk contained in transit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="customize" id="customize">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Design yours</span>
+      <h2>Customize your chalk box</h2>
+      <p>Pick a box color, choose one color for the printed names, then add your gym and gymnast. Your preview updates as you go.</p>
+    </div>
+
+    <div class="cz-grid">
+      <div class="cz-preview">
+        <div class="preview-card">
+          <svg id="boxSvg" viewBox="0 0 400 300" width="100%" height="auto"></svg>
+          <div class="lid-plate" id="lidPlate">
+            <div class="plate-label">Lid Preview</div>
+            <div class="gym-line" id="gymLinePreview">YOUR GYM</div>
+            <div class="gymnast-line" id="gymnastLinePreview">Gymnast Name</div>
+          </div>
+          <ul class="spec-list">
+            <li>Box color <b id="specBoxColor"><span class="swatch-dot" id="specBoxDot"></span>Chalk White</b></li>
+            <li>Print color <b id="specTextColor"><span class="swatch-dot" id="specTextDot"></span>Black</b></li>
+            <li>Font <b id="specFont">Classic</b></li>
+            <li>Gym name <b id="specGym">—</b></li>
+            <li>Gymnast name <b id="specGymnast">—</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cz-panel">
+        <div class="cz-step">
+          <div class="cz-step-title"><span class="cz-step-num">1</span>Choose your box color</div>
+          <div class="swatches" id="boxSwatches"></div>
+        </div>
+
+        <div class="cz-step">
+          <div class="cz-step-title"><span class="cz-step-num">2</span>Choose your print color</div>
+          <p style="font-size:13px;color:var(--ink-soft);margin:-6px 0 14px;">Gym name and gymnast name are printed together in this one color.</p>
+          <div class="swatches" id="textSwatches"></div>
+        </div>
+
+        <div class="cz-step">
+          <div class="cz-step-title"><span class="cz-step-num">3</span>Choose a font</div>
+          <div class="font-options" id="fontOptions"></div>
+        </div>
+
+        <div class="cz-step">
+          <div class="cz-step-title"><span class="cz-step-num">4</span>Add your names</div>
+          <div class="field">
+            <label for="gymNameInput">Gym name</label>
+            <input type="text" id="gymNameInput" maxlength="24" placeholder="e.g. Summit Elite Gymnastics">
+          </div>
+          <div class="field">
+            <label for="gymnastNameInput">Gymnast name</label>
+            <input type="text" id="gymnastNameInput" maxlength="24" placeholder="e.g. Ava Thompson">
+            <div class="hint">Both names print in the print color and font you chose above.</div>
+          </div>
+        </div>
+
+        <a href="#order" class="btn btn-primary" id="addToOrderBtn" style="width:100%;">Add This Design to Order →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why ChalkBox</span>
+      <h2>Made for gymnasts, by gymnasts</h2>
+      <p>We've been the gymnast who slipped off the beam. That's why we built the ChalkBox ourselves — a wide, low-lip design that fully chalks feet before every beam pass, so grip stays solid and slipping off the beam stops being a worry.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="icon">🤸</div>
+        <h3>By gymnasts, for gymnasts</h3>
+        <p>Every detail — the shape, the depth, the size of the base — was tested by beam gymnasts solving their own grip problem, not designed from the sidelines.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">✋</div>
+        <h3>Stops slipping off the beam</h3>
+        <p>The wide, low-lip design fully coats the soles and sides of the feet in chalk, so gymnasts mount and stick every landing with confidence.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🏆</div>
+        <h3>Team-ready</h3>
+        <p>Order a full set for your gym with matching box colors and each gymnast's name printed in your team's color.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="order" id="order">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Order</span>
+      <h2>Request your custom box</h2>
+      <p>No online checkout yet — send us your design and we'll follow up to confirm details, pricing, and turnaround.</p>
+    </div>
+
+    <div class="order-grid">
+      <div class="order-info">
+        <h3>How ordering works</h3>
+        <p>Fill out the form with your contact info. Your box color, print color, and names carry over automatically from the customizer above.</p>
+        <ul>
+          <li>We'll email you a quote within 1–2 business days</li>
+          <li>Bulk/team orders get a discount</li>
+          <li>Typical turnaround: 2–3 weeks</li>
+        </ul>
+      </div>
+
+      <div class="form-card">
+        <form id="orderForm">
+          <div class="form-row two">
+            <div class="field">
+              <label for="fName">Your name</label>
+              <input type="text" id="fName" required>
+            </div>
+            <div class="field">
+              <label for="fEmail">Email</label>
+              <input type="email" id="fEmail" required>
+            </div>
+          </div>
+          <div class="form-row two">
+            <div class="field">
+              <label for="fGym">Gym name</label>
+              <input type="text" id="fGym">
+            </div>
+            <div class="field">
+              <label for="fGymnast">Gymnast name</label>
+              <input type="text" id="fGymnast">
+            </div>
+          </div>
+          <div class="form-row two">
+            <div class="field">
+              <label for="fQty">Quantity</label>
+              <input type="number" id="fQty" min="1" value="1">
+            </div>
+            <div class="field">
+              <label>Selected colors</label>
+              <input type="text" id="fColors" readonly>
+            </div>
+          </div>
+          <div class="field">
+            <label for="fNotes">Notes (optional)</label>
+            <textarea id="fNotes" rows="3" placeholder="Anything else we should know?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Send Order Request →</button>
+          <div class="confirm-box" id="confirmBox">Your email app should now be open with your request pre-filled and addressed to ashleighdeckert29@gmail.com — just hit send. If it didn't open, email us directly at ashleighdeckert29@gmail.com.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="founder" id="founder">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">About</span>
+      <h2>Meet the founder</h2>
+      <p>The gymnast behind the box.</p>
+    </div>
+    <div class="founder-card">
+      <img class="founder-avatar" src="splitjump copy.jpeg" alt="Ashleigh Deckert performing a split leap on the balance beam">
+      <div class="founder-bio">
+        <h3>Ashleigh Deckert</h3>
+        <div class="founder-tags">
+          <span class="founder-tag">Level 9 Gymnast</span>
+          <span class="founder-tag">High School Student</span>
+          <span class="founder-tag">Future Engineer</span>
+        </div>
+        <p>Ashleigh is a Level 9 gymnast and high schooler who spends as much time on the beam as she does behind a keyboard. Chalk boxes never seemed to fit gymnasts, so she set out to design one that does — combining her firsthand experience in the gym with a growing passion for engineering and computer science. ChalkBox Co. is the result: a box built by a gymnast, for gymnasts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div class="logo"><span class="dot"></span>ChalkBox Co.</div>
+    <div class="fine">© 2026 ChalkBox Co. · Custom chalk boxes for beam gymnasts · ashleighdeckert29@gmail.com</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var navToggle = document.getElementById('navToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+  navToggle.addEventListener('click', function(){
+    var isOpen = mobileMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    navToggle.textContent = isOpen ? '✕' : '☰';
+  });
+  Array.prototype.forEach.call(mobileMenu.querySelectorAll('a'), function(a){
+    a.addEventListener('click', function(){
+      mobileMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.textContent = '☰';
+    });
+  });
+
+  var boxColors = [
+    {name:"Chalk White", hex:"#F5F1EA"},
+    {name:"Beam Blue", hex:"#2F6FED"},
+    {name:"Grip Purple", hex:"#7C4DFF"},
+    {name:"Vault Pink", hex:"#FF5CA8"},
+    {name:"Sunset Orange", hex:"#FF8A3D"},
+    {name:"Mat Green", hex:"#2FB380"},
+    {name:"Ribbon Red", hex:"#E63946"},
+    {name:"Floor Black", hex:"#23262B"}
+  ];
+  var textColors = [
+    {name:"Black", hex:"#1A1A1A"},
+    {name:"White", hex:"#FFFFFF"},
+    {name:"Gold", hex:"#D4AF37"},
+    {name:"Silver", hex:"#B8BCC4"},
+    {name:"Beam Blue", hex:"#2F6FED"},
+    {name:"Vault Pink", hex:"#FF5CA8"},
+    {name:"Grip Purple", hex:"#7C4DFF"},
+    {name:"Ribbon Red", hex:"#E63946"}
+  ];
+
+  var fonts = [
+    {name:"Classic", family:"'Poppins',sans-serif", weight:800},
+    {name:"Cursive", family:"'Dancing Script',cursive", weight:700},
+    {name:"Elegant", family:"'Playfair Display',serif", weight:800},
+    {name:"Bold Sport", family:"'Bebas Neue',sans-serif", weight:400}
+  ];
+
+  var state = {
+    boxColor: boxColors[0].hex,
+    boxColorName: boxColors[0].name,
+    textColor: textColors[0].hex,
+    textColorName: textColors[0].name,
+    font: fonts[0].family,
+    fontName: fonts[0].name,
+    fontWeight: fonts[0].weight,
+    gym: "",
+    gymnast: ""
+  };
+
+  function shade(hex, percent){
+    hex = hex.replace('#','');
+    var num = parseInt(hex,16);
+    var r = (num >> 16) + Math.round(255*percent);
+    var g = ((num >> 8) & 0x00FF) + Math.round(255*percent);
+    var b = (num & 0x0000FF) + Math.round(255*percent);
+    r = Math.max(Math.min(255,r),0);
+    g = Math.max(Math.min(255,g),0);
+    b = Math.max(Math.min(255,b),0);
+    return "#" + (0x1000000 + r*0x10000 + g*0x100 + b).toString(16).slice(1);
+  }
+
+  function boxSvgMarkup(color, showText, gym, gymnast, textColor){
+    var top = color;
+    var left = shade(color, -0.06);
+    var right = shade(color, -0.20);
+    var stroke = shade(color, -0.35);
+    return '' +
+    '<g>' +
+      '<polygon points="70,130 200,70 330,130 200,190" fill="'+top+'" stroke="'+stroke+'" stroke-width="2"/>' +
+      '<polygon points="70,130 200,190 200,290 70,230" fill="'+left+'" stroke="'+stroke+'" stroke-width="2"/>' +
+      '<polygon points="330,130 200,190 200,290 330,230" fill="'+right+'" stroke="'+stroke+'" stroke-width="2"/>' +
+      '<line x1="70" y1="130" x2="200" y2="70" stroke="'+stroke+'" stroke-width="2" opacity="0.5"/>' +
+    '</g>';
+  }
+
+  function renderBox(targetId){
+    document.getElementById(targetId).innerHTML = boxSvgMarkup(state.boxColor);
+  }
+
+  function fitFontSize(text, base, min, max){
+    var len = text.length || 1;
+    var size = base;
+    if(len > 10) size = base - (len-10)*0.9;
+    return Math.max(min, Math.min(max, size));
+  }
+
+  function updatePreview(){
+    document.getElementById('gymLinePreview').textContent = (state.gym || "YOUR GYM").toUpperCase();
+    document.getElementById('gymnastLinePreview').textContent = state.gymnast || "Gymnast Name";
+    var gymEl = document.getElementById('gymLinePreview');
+    var gymnastEl = document.getElementById('gymnastLinePreview');
+    gymEl.style.color = state.textColor;
+    gymnastEl.style.color = state.textColor;
+    gymEl.style.fontSize = fitFontSize(state.gym || "YOUR GYM", 22, 14, 24) + "px";
+    gymnastEl.style.fontSize = fitFontSize(state.gymnast || "Gymnast Name", 15, 11, 16) + "px";
+    gymEl.style.fontFamily = state.font;
+    gymnastEl.style.fontFamily = state.font;
+    gymEl.style.fontWeight = state.fontWeight;
+    gymnastEl.style.fontWeight = state.fontWeight;
+
+    document.getElementById('lidPlate').style.borderColor = state.boxColor;
+
+    document.getElementById('specBoxColor').innerHTML = '<span class="swatch-dot" style="background:'+state.boxColor+'"></span>' + state.boxColorName;
+    document.getElementById('specTextColor').innerHTML = '<span class="swatch-dot" style="background:'+state.textColor+'"></span>' + state.textColorName;
+    document.getElementById('specFont').textContent = state.fontName;
+    document.getElementById('specGym').textContent = state.gym || "—";
+    document.getElementById('specGymnast').textContent = state.gymnast || "—";
+
+    renderBox('boxSvg');
+    renderBox('heroBoxSvg');
+
+    // sync order form
+    document.getElementById('fGym').value = state.gym;
+    document.getElementById('fGymnast').value = state.gymnast;
+    document.getElementById('fColors').value = state.boxColorName + " box / " + state.textColorName + " print";
+  }
+
+  function buildSwatches(containerId, list, kind){
+    var container = document.getElementById(containerId);
+    list.forEach(function(c, i){
+      var el = document.createElement('div');
+      el.className = 'swatch' + (i===0 ? ' active' : '');
+      el.style.background = c.hex;
+      el.setAttribute('data-hex', c.hex);
+      el.setAttribute('title', c.name);
+      el.addEventListener('click', function(){
+        Array.prototype.forEach.call(container.children, function(s){ s.classList.remove('active'); });
+        el.classList.add('active');
+        if(kind === 'box'){
+          state.boxColor = c.hex; state.boxColorName = c.name;
+        } else {
+          state.textColor = c.hex; state.textColorName = c.name;
+        }
+        updatePreview();
+      });
+      container.appendChild(el);
+    });
+  }
+
+  function buildFontOptions(containerId){
+    var container = document.getElementById(containerId);
+    fonts.forEach(function(f, i){
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'font-option' + (i===0 ? ' active' : '');
+      el.innerHTML = '<span class="font-option-label">'+f.name+'</span>' +
+        '<span class="font-option-sample" style="font-family:'+f.family+';font-weight:'+f.weight+';">Gymnast Name</span>';
+      el.addEventListener('click', function(){
+        Array.prototype.forEach.call(container.children, function(s){ s.classList.remove('active'); });
+        el.classList.add('active');
+        state.font = f.family; state.fontName = f.name; state.fontWeight = f.weight;
+        updatePreview();
+      });
+      container.appendChild(el);
+    });
+  }
+
+  buildSwatches('boxSwatches', boxColors, 'box');
+  buildSwatches('textSwatches', textColors, 'text');
+  buildFontOptions('fontOptions');
+
+  document.getElementById('gymNameInput').addEventListener('input', function(e){
+    state.gym = e.target.value; updatePreview();
+  });
+  document.getElementById('gymnastNameInput').addEventListener('input', function(e){
+    state.gymnast = e.target.value; updatePreview();
+  });
+
+  document.getElementById('orderForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('fName').value;
+    var email = document.getElementById('fEmail').value;
+    var qty = document.getElementById('fQty').value;
+    var notes = document.getElementById('fNotes').value;
+
+    var subject = "Custom Chalk Box Order Request — " + (state.gym || name);
+    var body = [
+      "Name: " + name,
+      "Email: " + email,
+      "Gym name: " + (state.gym || "—"),
+      "Gymnast name: " + (state.gymnast || "—"),
+      "Box color: " + state.boxColorName + " (" + state.boxColor + ")",
+      "Print color: " + state.textColorName + " (" + state.textColor + ")",
+      "Font: " + state.fontName,
+      "Quantity: " + qty,
+      "Notes: " + (notes || "—")
+    ].join("\n");
+
+    var mailto = "mailto:ashleighdeckert29@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    window.location.href = mailto;
+
+    document.getElementById('confirmBox').classList.add('show');
+  });
+
+  updatePreview();
+})();
+</script>
+
+</body>
+</html>
